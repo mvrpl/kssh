@@ -1,8 +1,8 @@
-# SSH client with Google Cloud KMS
+# SSH client with AWS KMS
 
     $ go install github.com/mvrpl/kssh@v1.0.0
 
-You can set Google Cloud KMS resource ID:
+You can set AWS KMS resource ID:
 
     $ export KSSH_KEY_ID=63c5fc45-f568-430e-89f5-3t92d7491f5e
 
