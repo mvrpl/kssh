@@ -4,7 +4,6 @@ import (
 	"context"
 	"crypto"
 	"crypto/x509"
-	"encoding/pem"
 	"fmt"
 	"io"
 	"time"
@@ -33,8 +32,7 @@ func NewSigner(client *kms.Client, keyId string) (*Signer, error) {
 		return nil, fmt.Errorf("failed to get public key: %s", err)
 	}
 
-	block, _ := pem.Decode([]byte(pubKeypb.PublicKey))
-	pubKey, err := x509.ParsePKIXPublicKey(block.Bytes)
+	pubKey, err := x509.ParsePKIXPublicKey(pubKeypb.PublicKey)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse public key: %s", err)
 	}
