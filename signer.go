@@ -8,7 +8,6 @@ import (
 	"io"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	kms "github.com/aws/aws-sdk-go-v2/service/kms"
 	"github.com/aws/aws-sdk-go-v2/service/kms/types"
 )
@@ -55,23 +54,15 @@ func (s *Signer) HashFunc() crypto.Hash {
 
 func (s *Signer) Sign(rand io.Reader, digest []byte, opts crypto.SignerOpts) (signature []byte, err error) {
 	ctx := context.Background()
-	ctx, _ = context.WithTimeout(ctx, s.signTimeout)
-
-	kmsDigest := &kms.GenerateMacInput{
-		KeyId:        aws.String(s.keyId),
-		Message:      digest,
-		MacAlgorithm: types.MacAlgorithmSpecHmacSha256,
-	}
-
-	result, err := s.client.GenerateMac(ctx, kmsDigest)
-	if err != nil {
-		return nil, fmt.Errorf("failed to sign: %s", err)
-	}
+	ctx, cancel := context.WithTimeout(ctx, s.signTimeout)
+	defer cancel()
 
 	res, err := s.client.Sign(ctx, &kms.SignInput{
-		KeyId:   &s.keyId,
-		Message: result.Mac,
+		KeyId:            &s.keyId,
+		Message:          digest,
+		SigningAlgorithm: types.SigningAlgorithmSpecEcdsaSha256,
 	})
+
 	if err != nil {
 		return nil, fmt.Errorf("failed to sign: %s", err)
 	}
