@@ -1,6 +1,6 @@
 # SSH client with AWS KMS
 
-    $ go install github.com/mvrpl/kssh@v1.0.0
+    $ go install github.com/mvrpl/kssh@latest
 
 You can set AWS KMS resource ID:
 
