@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"crypto"
+	"crypto/sha256"
 	"crypto/x509"
 	"fmt"
 	"io"
@@ -22,7 +23,8 @@ type Signer struct {
 
 func NewSigner(client *kms.Client, keyId string) (*Signer, error) {
 	ctx := context.Background()
-	ctx, _ = context.WithTimeout(ctx, 10*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
 
 	pubKeypb, err := client.GetPublicKey(ctx, &kms.GetPublicKeyInput{
 		KeyId: &keyId,
@@ -57,10 +59,17 @@ func (s *Signer) Sign(rand io.Reader, digest []byte, opts crypto.SignerOpts) (si
 	ctx, cancel := context.WithTimeout(ctx, s.signTimeout)
 	defer cancel()
 
+	fmt.Println("=======SIGN======")
+
+	hash := sha256.New()
+	hash.Write(digest)
+	hashedMessage := hash.Sum(nil)
+
 	res, err := s.client.Sign(ctx, &kms.SignInput{
 		KeyId:            &s.keyId,
-		Message:          digest,
-		SigningAlgorithm: types.SigningAlgorithmSpecEcdsaSha256,
+		Message:          hashedMessage,
+		SigningAlgorithm: types.SigningAlgorithmSpecRsassaPkcs1V15Sha256,
+		MessageType:      types.MessageTypeDigest,
 	})
 
 	if err != nil {
