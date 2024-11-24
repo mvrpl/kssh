@@ -10,6 +10,11 @@ Supported Cloud KMS algorithm:
 
 - RSA_2048
 
+## Support
+
+    Linux and Mac OS
+    NOT WORKS ON MICROSOFT WINDOWS
+
 ## authorized_key
 
 Print public key:
