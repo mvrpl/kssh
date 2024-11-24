@@ -17,7 +17,7 @@ import (
 	kms "github.com/aws/aws-sdk-go-v2/service/kms"
 	"github.com/mvrpl/kssh/signer"
 	"golang.org/x/crypto/ssh"
-	"golang.org/x/crypto/ssh/terminal"
+	"golang.org/x/term"
 )
 
 var kmsKeyPath = os.Getenv("KSSH_KEY_ID")
@@ -120,13 +120,13 @@ func run(ctx context.Context, signer ssh.Signer, user, host string, port int) er
 	}()
 
 	fd := int(os.Stdin.Fd())
-	state, err := terminal.MakeRaw(fd)
+	state, err := term.MakeRaw(fd)
 	if err != nil {
 		return fmt.Errorf("terminal make raw: %s", err)
 	}
-	defer terminal.Restore(fd, state)
+	defer term.Restore(fd, state)
 
-	w, h, err := terminal.GetSize(fd)
+	w, h, err := term.GetSize(fd)
 	if err != nil {
 		return fmt.Errorf("terminal get size: %s", err)
 	}
