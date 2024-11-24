@@ -1,9 +1,8 @@
-package main
+package signer
 
 import (
 	"context"
 	"crypto"
-	"crypto/sha256"
 	"crypto/x509"
 	"fmt"
 	"io"
@@ -17,6 +16,8 @@ type Signer struct {
 	keyId       string
 	client      *kms.Client
 	signTimeout time.Duration
+
+	algorithm types.SigningAlgorithmSpec
 
 	pubKey crypto.PublicKey
 }
@@ -42,6 +43,7 @@ func NewSigner(client *kms.Client, keyId string) (*Signer, error) {
 		keyId:       keyId,
 		client:      client,
 		signTimeout: 15 * time.Second,
+		algorithm:   types.SigningAlgorithmSpecRsassaPkcs1V15Sha256,
 		pubKey:      pubKey,
 	}, nil
 }
@@ -51,7 +53,16 @@ func (s *Signer) Public() crypto.PublicKey {
 }
 
 func (s *Signer) HashFunc() crypto.Hash {
-	return crypto.SHA256
+	switch s.algorithm {
+	case types.SigningAlgorithmSpecEcdsaSha256,
+		types.SigningAlgorithmSpecRsassaPkcs1V15Sha256:
+		return crypto.SHA256
+	case types.SigningAlgorithmSpecEcdsaSha384,
+		types.SigningAlgorithmSpecRsassaPkcs1V15Sha384:
+		return crypto.SHA384
+	default:
+		return 0
+	}
 }
 
 func (s *Signer) Sign(rand io.Reader, digest []byte, opts crypto.SignerOpts) (signature []byte, err error) {
@@ -59,16 +70,10 @@ func (s *Signer) Sign(rand io.Reader, digest []byte, opts crypto.SignerOpts) (si
 	ctx, cancel := context.WithTimeout(ctx, s.signTimeout)
 	defer cancel()
 
-	fmt.Println("=======SIGN======")
-
-	hash := sha256.New()
-	hash.Write(digest)
-	hashedMessage := hash.Sum(nil)
-
 	res, err := s.client.Sign(ctx, &kms.SignInput{
 		KeyId:            &s.keyId,
-		Message:          hashedMessage,
-		SigningAlgorithm: types.SigningAlgorithmSpecRsassaPkcs1V15Sha256,
+		Message:          digest,
+		SigningAlgorithm: s.algorithm,
 		MessageType:      types.MessageTypeDigest,
 	})
 

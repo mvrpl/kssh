@@ -15,6 +15,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	kms "github.com/aws/aws-sdk-go-v2/service/kms"
+	"github.com/mvrpl/kssh/signer"
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/crypto/ssh/terminal"
 )
@@ -173,5 +174,5 @@ func loadSigner(ctx context.Context, key string) (crypto.Signer, error) {
 	if err != nil {
 		return nil, err
 	}
-	return NewSigner(client, key)
+	return signer.NewSigner(client, key)
 }
