@@ -23,7 +23,7 @@ func TestSigner(t *testing.T) {
 	}
 	client := kms.NewFromConfig(cfg)
 
-	kmsKeyId := os.Getenv("KSSH_KEY_ID")
+	kmsKeyId := os.Getenv("KSSH_KEY")
 
 	signer, err := NewSigner(client, kmsKeyId)
 	if err != nil {

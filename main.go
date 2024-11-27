@@ -20,7 +20,7 @@ import (
 	"golang.org/x/term"
 )
 
-var kmsKeyPath = os.Getenv("KSSH_KEY_ID")
+var kmsKeyAlias = os.Getenv("KSSH_KEY")
 
 var defaultUsername = func() string {
 	cu, _ := user.Current()
@@ -30,7 +30,7 @@ var defaultUsername = func() string {
 var (
 	username = flag.String("l", defaultUsername, "Specifies the user to log in as on the remote machine.")
 	port     = flag.Int("p", 22, "Port to connect to on the remote host.")
-	key      = flag.String("i", kmsKeyPath, "Selects a AWS KMS resource ID.")
+	key      = flag.String("i", kmsKeyAlias, "Selects a AWS KMS resource Alias.")
 
 	printAuthorizedKey = flag.Bool("authorized_key", false, `print authorized_key (public key)
 You can copy the public key to ~/.ssh/authorized_keys in your home directory on the remote machine.`)
