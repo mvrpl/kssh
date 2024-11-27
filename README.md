@@ -6,9 +6,9 @@ You can set AWS KMS resource ID:
 
     $ export KSSH_KEY_ID=63c5fc45-f568-430e-89f5-3t92d7491f5e
 
-Supported Cloud KMS algorithm:
+Supported Cloud AWS KMS:
 
-- RSA_2048
+![AWS KMS Key](aws_kms_key.png)
 
 ## Support
 
