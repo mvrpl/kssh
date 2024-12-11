@@ -8,6 +8,7 @@ on:
 jobs:
   builds:
     runs-on: ${{ matrix.runner }}
+    needs: [create_release]
     strategy:
       matrix:
         include:
@@ -68,7 +69,6 @@ jobs:
   create_release:
     runs-on: ubuntu-latest
     if: ${{ always() }}
-    needs: [builds]
     steps:
       - name: Create Release
         id: create_release
