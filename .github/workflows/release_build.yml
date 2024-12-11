@@ -43,8 +43,7 @@ jobs:
           export CGO_ENABLE=1
           go mod tidy
           go build -o kssh-${{ matrix.name }} .
-          tag_name="${GITHUB_REF##*/}"
-          gh release upload $tag_name kssh-${{ matrix.name }}
+          gh release upload ${{ github.ref_name }} kssh-${{ matrix.name }}
       - name: Build linux
         if: matrix.runner == 'ubuntu-latest'
         env:
@@ -53,8 +52,7 @@ jobs:
           export CGO_ENABLE=1
           go mod tidy
           go build -o kssh-${{ matrix.name }} .
-          tag_name="${GITHUB_REF##*/}"
-          gh release upload $tag_name kssh-${{ matrix.name }}
+          gh release upload ${{ github.ref_name }} kssh-${{ matrix.name }}
       - name: Build windows
         if: matrix.runner == 'windows-latest'
         env:
@@ -63,5 +61,4 @@ jobs:
           $env:CGO_ENABLE=1
           go mod tidy
           go build -o kssh-${{ matrix.name }}.exe .
-          tag_name="${GITHUB_REF##*/}"
-          gh release upload $tag_name kssh-${{ matrix.name }}.exe
+          gh release upload ${{ github.ref_name }} kssh-${{ matrix.name }}.exe
