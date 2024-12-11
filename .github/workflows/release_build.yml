@@ -8,7 +8,6 @@ on:
 jobs:
   builds:
     runs-on: ${{ matrix.runner }}
-    needs: [create_release]
     strategy:
       matrix:
         include:
@@ -66,19 +65,3 @@ jobs:
           go build -o kssh-${{ matrix.name }}.exe .
           tag_name="${GITHUB_REF##*/}"
           gh release upload $tag_name kssh-${{ matrix.name }}.exe
-  create_release:
-    runs-on: ubuntu-latest
-    if: ${{ always() }}
-    steps:
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            ## Binaries of version ${{ github.ref_name }}
-          draft: false
-          prerelease: false
