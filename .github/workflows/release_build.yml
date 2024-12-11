@@ -42,7 +42,7 @@ jobs:
           go mod tidy
           go build -o kssh-${{ matrix.name }} .
           tag_name="${GITHUB_REF##*/}"
-          hub release create "kssh-${{ matrix.name }}" -m "$tag_name" "$tag_name"
+          gh release upload $tag_name kssh-${{ matrix.name }}
       - name: Build linux
         if: matrix.runner == 'ubuntu-latest'
         run: |
@@ -50,7 +50,7 @@ jobs:
           go mod tidy
           go build -o kssh-${{ matrix.name }} .
           tag_name="${GITHUB_REF##*/}"
-          hub release create "kssh-${{ matrix.name }}" -m "$tag_name" "$tag_name"
+          gh release upload $tag_name kssh-${{ matrix.name }}
       - name: Build windows
         if: matrix.runner == 'windows-latest'
         run: |
@@ -58,7 +58,7 @@ jobs:
           go mod tidy
           go build -o kssh-${{ matrix.name }}.exe .
           tag_name="${GITHUB_REF##*/}"
-          hub release create "kssh-${{ matrix.name }}.exe" -m "$tag_name" "$tag_name"
+          gh release upload $tag_name kssh-${{ matrix.name }}.exe
   create_release:
     runs-on: ubuntu-latest
     if: ${{ always() }}
