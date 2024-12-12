@@ -12,8 +12,7 @@ Supported Cloud AWS KMS:
 
 ## Support
 
-    Linux and Mac OS
-    NOT WORKS ON MICROSOFT WINDOWS
+    Linux, Mac OS and Microsoft Windows
 
 ## authorized_key
 
