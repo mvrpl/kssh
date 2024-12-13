@@ -15,6 +15,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	kms "github.com/aws/aws-sdk-go-v2/service/kms"
+	"github.com/demille/termsize"
 	"github.com/mvrpl/kssh/signer"
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/term"
@@ -126,7 +127,10 @@ func run(ctx context.Context, signer ssh.Signer, user, host string, port int) er
 	}
 	defer term.Restore(fd, state)
 
-	w, h, err := term.GetSize(fd)
+	if err := termsize.Init(); err != nil {
+		panic(err)
+	}
+	w, h, err := termsize.Size()
 	if err != nil {
 		return fmt.Errorf("terminal get size: %s", err)
 	}
