@@ -1,5 +1,6 @@
 ![build workflow](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
 [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
+![Scoop Version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmvrpl%2Fwindows-apps%2Frefs%2Fheads%2Fmain%2Fkssh.json&query=%24.version)
 
 # SSH client with AWS KMS
 
