@@ -19,6 +19,7 @@ import (
 	"github.com/mvrpl/kssh/signer"
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/term"
+	"io/ioutil"
 )
 
 var kmsKeyAlias = os.Getenv("KSSH_KEY")
@@ -93,13 +94,22 @@ func main() {
 }
 
 func run(ctx context.Context, signer ssh.Signer, user, host string, port int) error {
+	publicKeyBytes, err := ioutil.ReadFile("allowed_hostkey.pub")
+	if err != nil {
+		return fmt.Errorf("cannot read allowed host key: %v", err)
+	}
+	publicKey, err := ssh.ParsePublicKey(publicKeyBytes)
+	if err != nil {
+		return fmt.Errorf("cannot parse allowed host key: %v", err)
+	}
+
 	config := &ssh.ClientConfig{
 		User: user,
 		Auth: []ssh.AuthMethod{
 			ssh.PublicKeys(signer),
 		},
 		Timeout:         5 * time.Second,
-		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+		HostKeyCallback: ssh.FixedHostKey(publicKey),
 	}
 
 	hostport := fmt.Sprintf("%s:%d", host, port)
