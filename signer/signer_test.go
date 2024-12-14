@@ -25,6 +25,11 @@ func TestSigner(t *testing.T) {
 
 	kmsKeyId := os.Getenv("KSSH_KEY")
 
+	if kmsKeyId == "" {
+		log.Println("WARN: Cannot found KSSH_KEY enviroment variable!")
+		t.Skip()
+	}
+
 	signer, err := NewSigner(client, kmsKeyId)
 	if err != nil {
 		log.Fatal(err)
