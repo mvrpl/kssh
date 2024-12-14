@@ -1,6 +1,7 @@
 ![build workflow](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
 [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
 ![Scoop Version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmvrpl%2Fwindows-apps%2Frefs%2Fheads%2Fmain%2Fkssh.json&query=%24.version&style=flat&label=Scoop%20Version&link=https%3A%2F%2Fgithub.com%2Fmvrpl%2Fwindows-apps%2Fblob%2Fmain%2Fkssh.json)
+![Brew Version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmvrpl%2Funix-apps%2Frefs%2Fheads%2Fmain%2Fversions.json&query=%24.kssh&style=flat&label=Brew%20Version&color=%23DFC57B&link=https%3A%2F%2Fgithub.com%2Fmvrpl%2Funix-apps%2Fblob%2Fmain%2Fkssh.rb)
 
 
 # SSH client with AWS KMS
