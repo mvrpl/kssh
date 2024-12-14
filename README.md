@@ -1,3 +1,6 @@
+![build workflow](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
+[![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
+
 # SSH client with AWS KMS
 
     $ go install github.com/mvrpl/kssh@latest
