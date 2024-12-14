@@ -3,12 +3,15 @@ package main
 import (
 	"context"
 	"crypto"
+	"errors"
 	"flag"
 	"fmt"
 	"log"
+	"net"
 	"os"
 	"os/signal"
 	"os/user"
+	"path/filepath"
 	"strings"
 	"syscall"
 	"time"
@@ -18,8 +21,8 @@ import (
 	"github.com/demille/termsize"
 	"github.com/mvrpl/kssh/signer"
 	"golang.org/x/crypto/ssh"
+	"golang.org/x/crypto/ssh/knownhosts"
 	"golang.org/x/term"
-	"io/ioutil"
 )
 
 var kmsKeyAlias = os.Getenv("KSSH_KEY")
@@ -93,23 +96,75 @@ func main() {
 	}
 }
 
-func run(ctx context.Context, signer ssh.Signer, user, host string, port int) error {
-	publicKeyBytes, err := ioutil.ReadFile("allowed_hostkey.pub")
-	if err != nil {
-		return fmt.Errorf("cannot read allowed host key: %v", err)
+func addHostKey(remote net.Addr, pubKey ssh.PublicKey) error {
+	khFilePath := filepath.Join(os.Getenv("HOME"), ".ssh", "known_hosts")
+
+	f, fErr := os.OpenFile(khFilePath, os.O_APPEND|os.O_WRONLY, 0600)
+	if fErr != nil {
+		return fErr
 	}
-	publicKey, err := ssh.ParsePublicKey(publicKeyBytes)
-	if err != nil {
-		return fmt.Errorf("cannot parse allowed host key: %v", err)
+	defer f.Close()
+
+	knownHosts := knownhosts.Normalize(remote.String())
+	_, fileErr := f.WriteString(knownhosts.Line([]string{knownHosts}, pubKey))
+	return fileErr
+}
+
+func createKnownHosts() {
+	khFilePath := filepath.Join(os.Getenv("HOME"), ".ssh", "known_hosts")
+	_, err := os.Stat(khFilePath)
+	if os.IsNotExist(err) {
+		fmt.Printf("File %s does not exist.\n", khFilePath)
 	}
 
+	f, fErr := os.OpenFile(khFilePath, os.O_CREATE, 0600)
+	if fErr != nil {
+		panic(fErr)
+	}
+	f.Close()
+}
+
+func checkKnownHosts() ssh.HostKeyCallback {
+	createKnownHosts()
+	kh, err := knownhosts.New(filepath.Join(os.Getenv("HOME"), ".ssh", "known_hosts"))
+	if err != nil {
+		panic(err)
+	}
+	return kh
+}
+
+func hostKeyString(pubKey ssh.PublicKey) string {
+	authorizedKeyBytes := ssh.MarshalAuthorizedKey(pubKey)
+	return string(authorizedKeyBytes)
+}
+
+func hostKeyCallback() ssh.HostKeyCallback {
+	var (
+		keyErr *knownhosts.KeyError
+	)
+	return ssh.HostKeyCallback(func(host string, remote net.Addr, pubKey ssh.PublicKey) error {
+		kh := checkKnownHosts()
+		hErr := kh(host, remote, pubKey)
+		if errors.As(hErr, &keyErr) && len(keyErr.Want) > 0 {
+			log.Printf("WARNING: %v is not a key of %s, either a MiTM attack or %s has reconfigured the host pub key.", hostKeyString(pubKey), host, host)
+			return keyErr
+		} else if errors.As(hErr, &keyErr) && len(keyErr.Want) == 0 {
+			log.Printf("WARNING: %s is not trusted, adding this key: %q to known_hosts file.", host, hostKeyString(pubKey))
+			return addHostKey(remote, pubKey)
+		}
+		log.Printf("Pub key exists for %s.", host)
+		return nil
+	})
+}
+
+func run(ctx context.Context, signer ssh.Signer, user, host string, port int) error {
 	config := &ssh.ClientConfig{
 		User: user,
 		Auth: []ssh.AuthMethod{
 			ssh.PublicKeys(signer),
 		},
 		Timeout:         5 * time.Second,
-		HostKeyCallback: ssh.FixedHostKey(publicKey),
+		HostKeyCallback: hostKeyCallback(),
 	}
 
 	hostport := fmt.Sprintf("%s:%d", host, port)
@@ -182,7 +237,7 @@ func run(ctx context.Context, signer ssh.Signer, user, host string, port int) er
 func loadSigner(ctx context.Context, key string) (crypto.Signer, error) {
 	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion("sa-east-1"))
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	client := kms.NewFromConfig(cfg)
 	if err != nil {
