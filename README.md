@@ -20,9 +20,9 @@ scoop install mvrpl/kssh
 brew install kssh
 ```
 ---
-You can set AWS KMS resource ID:
+You can set AWS KMS resource ID or Alias:
 
-    export KSSH_KEY_ID=63c5fc45-f568-430e-89f5-3t92d7491f5e
+    export KSSH_KEY=63c5fc45-f568-430e-89f5-3t92d7491f5e
 
 Supported Cloud AWS KMS:
 
