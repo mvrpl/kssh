@@ -17,7 +17,7 @@ import (
 func TestSigner(t *testing.T) {
 	ctx := context.Background()
 
-	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion("sa-east-1"))
+	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion(getEnv("KSSH_AWS_DEFAULT_REGION", "sa-east-1")))
 	if err != nil {
 		log.Fatal(err)
 	}
