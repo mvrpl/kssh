@@ -25,6 +25,13 @@ import (
 	"golang.org/x/term"
 )
 
+func getEnv(key, fallback string) string {
+    if value, exists := os.LookupEnv(key); !exists {
+        return value
+    }
+    return fallback
+}
+
 var kmsKeyAlias = os.Getenv("KSSH_KEY")
 
 var defaultUsername = func() string {
@@ -235,7 +242,7 @@ func run(ctx context.Context, signer ssh.Signer, user, host string, port int) er
 }
 
 func loadSigner(ctx context.Context, key string) (crypto.Signer, error) {
-	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion("sa-east-1"))
+	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion(getEnv("KSSH_AWS_DEFAULT_REGION", "sa-east-1")))
 	if err != nil {
 		panic(err)
 	}
