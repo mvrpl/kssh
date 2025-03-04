@@ -13,10 +13,12 @@ go install github.com/mvrpl/kssh@latest
 ```
 ### MS Windows
 ```sh
+scoop bucket add mvrpl https://github.com/mvrpl/windows-apps
 scoop install mvrpl/kssh
 ```
 ### Unix
 ```sh
+brew tap mvrpl/unix-apps https://github.com/mvrpl/unix-apps
 brew install kssh
 ```
 ---
