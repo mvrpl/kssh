@@ -1,7 +1,7 @@
 [![Release KSSH](https://github.com/mvrpl/kssh/actions/workflows/main.yaml/badge.svg)](https://github.com/mvrpl/kssh/actions/workflows/main.yaml)
 [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
 [![Scoop Version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmvrpl%2Fwindows-apps%2Frefs%2Fheads%2Fmain%2Fbucket%2Fkssh.json&query=%24.version&style=flat&label=Scoop%20Version&link=https%3A%2F%2Fgithub.com%2Fmvrpl%2Fwindows-apps%2Fblob%2Fmain%2Fbucket%2Fkssh.json&color=%23012456)](https://github.com/mvrpl/windows-apps/blob/main/bucket/kssh.json)
-[![Brew Version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmvrpl%2Funix-apps%2Frefs%2Fheads%2Fmain%2Fversions.json&query=%24.kssh&style=flat&label=Brew%20Version&color=%23701516&link=https%3A%2F%2Fgithub.com%2Fmvrpl%2Funix-apps%2Fblob%2Fmain%2Fkssh.rb)](https://github.com/mvrpl/unix-apps/blob/main/kssh.rb)
+[![Brew Version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmvrpl%2Funix-apps%2Frefs%2Fheads%2Fmain%2Fversions.json&query=%24.kssh&style=flat&label=Brew%20Version&color=%23701516&link=https%3A%2F%2Fgithub.com%2Fmvrpl%2Funix-apps%2Fblob%2Fmain%2FFormula%2Fkssh.rb)](https://github.com/mvrpl/unix-apps/blob/main/kssh.rb)
 
 
 # SSH client with AWS KMS
