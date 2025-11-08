@@ -3,8 +3,8 @@ module github.com/mvrpl/kssh
 go 1.25
 
 require (
+	github.com/aws/aws-sdk-go-v2/service/kms v1.47.0
 	github.com/aws/aws-sdk-go-v2/config v1.31.16
-	github.com/aws/aws-sdk-go-v2/service/kms v1.46.0
 	github.com/demille/termsize v0.0.0-20150408082641-b7100f0f89cc
 	golang.org/x/crypto v0.43.0
 	golang.org/x/term v0.36.0
