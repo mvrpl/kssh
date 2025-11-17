@@ -3,11 +3,11 @@ module github.com/mvrpl/kssh
 go 1.25
 
 require (
-	github.com/aws/aws-sdk-go-v2/service/kms v1.47.0
 	github.com/aws/aws-sdk-go-v2/config v1.31.16
+	github.com/aws/aws-sdk-go-v2/service/kms v1.47.0
 	github.com/demille/termsize v0.0.0-20150408082641-b7100f0f89cc
-	golang.org/x/crypto v0.43.0
-	golang.org/x/term v0.36.0
+	golang.org/x/crypto v0.44.0
+	golang.org/x/term v0.37.0
 )
 
 require (
@@ -23,5 +23,5 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.35.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.39.0 // indirect
 	github.com/aws/smithy-go v1.23.1 // indirect
-	golang.org/x/sys v0.37.0 // indirect
+	golang.org/x/sys v0.38.0 // indirect
 )
