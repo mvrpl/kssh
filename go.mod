@@ -1,6 +1,6 @@
 module github.com/mvrpl/kssh
 
-go 1.26
+go 1.27
 
 require (
 	github.com/aws/aws-sdk-go-v2/config v1.32.38
