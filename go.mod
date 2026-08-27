@@ -4,7 +4,7 @@ go 1.26
 
 require (
 	github.com/aws/aws-sdk-go-v2/config v1.32.38
-	github.com/aws/aws-sdk-go-v2/service/kms v1.55.5
+	github.com/aws/aws-sdk-go-v2/service/kms v1.55.7
 	github.com/demille/termsize v0.0.0-20150408082641-b7100f0f89cc
 	golang.org/x/crypto v0.55.0
 	golang.org/x/term v0.45.0
