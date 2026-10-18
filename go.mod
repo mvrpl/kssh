@@ -7,7 +7,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/kms v1.61.0
 	github.com/demille/termsize v0.0.0-20150408082641-b7100f0f89cc
 	golang.org/x/crypto v0.57.0
-	golang.org/x/term v0.46.0
+	golang.org/x/term v0.47.0
 )
 
 require (
@@ -24,5 +24,5 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.43.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.50.0 // indirect
 	github.com/aws/smithy-go v1.28.1 // indirect
-	golang.org/x/sys v0.48.0 // indirect
+	golang.org/x/sys v0.49.0 // indirect
 )
