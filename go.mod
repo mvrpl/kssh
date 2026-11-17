@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/kms v1.62.6
 	github.com/aws/aws-sdk-go-v2/config v1.33.18
 	github.com/demille/termsize v0.0.0-20150408082641-b7100f0f89cc
-	golang.org/x/crypto v0.58.0
+	golang.org/x/crypto v0.59.0
 	golang.org/x/term v0.48.0
 )
 
